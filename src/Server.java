@@ -1,5 +1,5 @@
-
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -7,6 +7,7 @@ public class Server implements ActionListener {
 
     JTextField text;
     JPanel a1;
+    static Box vertical = Box.createVerticalBox();
     static JFrame f = new JFrame();
 
     Server() {
@@ -90,9 +91,44 @@ public class Server implements ActionListener {
         f.setVisible(true);
     }
 
-    @Override
     public void actionPerformed(ActionEvent ae) {
+        try {
+            String out = text.getText();
 
+            JPanel p2 = formatLabel(out);
+
+            a1.setLayout(new BorderLayout());
+
+            JPanel right = new JPanel(new BorderLayout());
+            right.add(p2, BorderLayout.LINE_END);
+            vertical.add(right);
+            vertical.add(Box.createVerticalStrut(15));
+
+            a1.add(vertical, BorderLayout.PAGE_START);
+            text.setText("");
+
+            f.repaint();
+            f.invalidate();
+            f.validate();   
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static JPanel formatLabel(String out) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        
+        JLabel output = new JLabel("<html><p style=\"width: 150px\">" + out + "</p></html>");
+        output.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        output.setBackground(new Color(37, 211, 102));
+        output.setOpaque(true);
+        output.setBorder(new EmptyBorder(15, 15, 15, 50));
+        
+        panel.add(output);
+      
+        
+        return panel;
     }
 
     public static void main(String[] args) {
