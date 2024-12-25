@@ -1,8 +1,9 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class Client {
+public class Client implements ActionListener {
 
     JTextField text;
     static JPanel a1;
@@ -24,6 +25,12 @@ public class Client {
         JLabel back = new JLabel(i3);
         back.setBounds(5, 20, 25, 25);
         p1.add(back);
+
+        back.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent ae) {
+                System.exit(0);
+            }
+        });
 
         ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("icons/1.jpg"));
         Image i5 = i4.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
@@ -81,6 +88,11 @@ public class Client {
         f.getContentPane().setBackground(Color.WHITE);
 
         f.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+
     }
 
     public static void main(String[] args) {
