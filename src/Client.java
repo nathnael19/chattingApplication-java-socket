@@ -74,9 +74,10 @@ public class Client {
         send.setFont(new Font("SAN_SERIF", Font.PLAIN, 16));
         f.add(send);
 
-        f.setSize(450, 800);
+        f.setSize(450, 700);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setLocation(800, 20);
+        f.setUndecorated(true);
         f.getContentPane().setBackground(Color.WHITE);
 
         f.setVisible(true);
