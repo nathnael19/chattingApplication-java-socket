@@ -2,13 +2,18 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.*;
 
 public class Server implements ActionListener {
 
     JTextField text;
     JPanel a1;
     static Box vertical = Box.createVerticalBox();
+    static DataOutputStream dout;
     static JFrame f = new JFrame();
+    
 
     Server() {
 
@@ -105,6 +110,7 @@ public class Server implements ActionListener {
             vertical.add(Box.createVerticalStrut(15));
 
             a1.add(vertical, BorderLayout.PAGE_START);
+             dout.writeUTF(out);
             text.setText("");
 
             f.repaint();
@@ -132,6 +138,27 @@ public class Server implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Server();
+        Server server = new Server();
+        
+        try {
+            ServerSocket skt = new ServerSocket(2017);
+            while(true) {
+                Socket s = skt.accept();
+                DataInputStream din = new DataInputStream(s.getInputStream());
+                dout = new DataOutputStream(s.getOutputStream());
+                
+                while(true) {
+                    String msg = din.readUTF();
+                    JPanel panel = formatLabel(msg);
+                    
+                    JPanel left = new JPanel(new BorderLayout());
+                    left.add(panel, BorderLayout.LINE_START);
+                    vertical.add(left);
+                    f.validate();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

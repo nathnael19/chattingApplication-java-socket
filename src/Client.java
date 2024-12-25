@@ -3,12 +3,16 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
 
 public class Client implements ActionListener {
 
     JTextField text;
     static JPanel a1;
     static Box vertical = Box.createVerticalBox();
+    static DataOutputStream dout;
 
     static JFrame f = new JFrame();
 
@@ -110,7 +114,7 @@ public class Client implements ActionListener {
             vertical.add(Box.createVerticalStrut(15));
 
             a1.add(vertical, BorderLayout.PAGE_START);
-
+ dout.writeUTF(out);
             text.setText("");
 
             f.repaint();
@@ -137,5 +141,27 @@ public class Client implements ActionListener {
 
     public static void main(String[] args) {
         Client client = new Client();
+        try {
+            Socket s = new Socket("127.0.0.1", 2017);
+            DataInputStream din = new DataInputStream(s.getInputStream());
+            dout = new DataOutputStream(s.getOutputStream());
+            
+            while(true) {
+                a1.setLayout(new BorderLayout());
+                String msg = din.readUTF();
+                JPanel panel = formatLabel(msg);
+
+                JPanel left = new JPanel(new BorderLayout());
+                left.add(panel, BorderLayout.LINE_START);
+                vertical.add(left);
+                
+                vertical.add(Box.createVerticalStrut(15));
+                a1.add(vertical, BorderLayout.PAGE_START);
+                
+                f.validate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
