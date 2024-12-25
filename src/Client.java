@@ -1,5 +1,6 @@
 
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -7,6 +8,8 @@ public class Client implements ActionListener {
 
     JTextField text;
     static JPanel a1;
+    static Box vertical = Box.createVerticalBox();
+
     static JFrame f = new JFrame();
 
     Client() {
@@ -27,6 +30,7 @@ public class Client implements ActionListener {
         p1.add(back);
 
         back.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent ae) {
                 System.exit(0);
             }
@@ -78,6 +82,7 @@ public class Client implements ActionListener {
         send.setBounds(320, 655, 123, 40);
         send.setBackground(Color.BLACK);
         send.setForeground(Color.WHITE);
+        send.addActionListener(this);
         send.setFont(new Font("SAN_SERIF", Font.PLAIN, 16));
         f.add(send);
 
@@ -92,7 +97,42 @@ public class Client implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        try {
+            String out = text.getText();
 
+            JPanel p2 = formatLabel(out);
+
+            a1.setLayout(new BorderLayout());
+
+            JPanel right = new JPanel(new BorderLayout());
+            right.add(p2, BorderLayout.LINE_END);
+            vertical.add(right);
+            vertical.add(Box.createVerticalStrut(15));
+
+            a1.add(vertical, BorderLayout.PAGE_START);
+
+            text.setText("");
+
+            f.repaint();
+            f.invalidate();
+            f.validate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static JPanel formatLabel(String out) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JLabel output = new JLabel("<html><p style=\"width: 150px\">" + out + "</p></html>");
+        output.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        output.setBackground(new Color(37, 211, 102));
+        output.setOpaque(true);
+        output.setBorder(new EmptyBorder(15, 15, 15, 50));
+        panel.add(output);
+
+        return panel;
     }
 
     public static void main(String[] args) {

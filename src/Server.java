@@ -78,6 +78,7 @@ public class Server implements ActionListener {
         send.setBounds(320, 655, 123, 40);
         send.setBackground(Color.BLACK);
         send.setForeground(Color.WHITE);
+        send.addActionListener(this);
         send.setFont(new Font("SAN_SERIF", Font.PLAIN, 16));
         f.add(send);
 
